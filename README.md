@@ -154,9 +154,9 @@ If you did not implement the feature
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
 | Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |                      |         | |
-| `ML/artifact`                         | NF           |                      |         | |
-| `ML/feature`                          | NF           |                      |         | |
+| `ML/detect-features`                  | FN           |   Leonie             |         | |
+| `ML/artifact`                         | NF           |   Kim                |         | |
+| `ML/feature`                          | NF           |   Kim                |         | |
 | `ML/metric`                           | NF           |                      |         | |
 | `ML/metric/extensions`                | FN           |                      |         | |
 | `ML/model`                            | NF           |                      |         | |
