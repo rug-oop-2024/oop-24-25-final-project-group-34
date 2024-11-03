@@ -16,7 +16,4 @@ class Feature:
     @property
     def type(self) -> str:
         """Public getter for the type attribute."""
-        return self._type   
-
-    def __str__(self) -> str:
-        raise NotImplementedError("To be implemented.")
+        return self._type
