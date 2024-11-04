@@ -157,8 +157,8 @@ If you did not implement the feature
 | `ML/detect-features`                  | FN           |   Leonie             |         | |
 | `ML/artifact`                         | NF           |   Kim                |         | |
 | `ML/feature`                          | NF           |   Kim                |         | |
-| `ML/metric`                           | NF           |                      |         | |
-| `ML/metric/extensions`                | FN           |                      |         | |
+| `ML/metric`                           | NF           |   both               |         | |
+| `ML/metric/extensions`                | FN           |   both               |         | |
 | `ML/model`                            | NF           |                      |         | |
 | `ML/model/extensions`                 | FN           |                      |         | |
 | `ML/pipeline/evaluation`              | FN           |                      |         | | 
