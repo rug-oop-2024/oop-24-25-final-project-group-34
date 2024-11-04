@@ -8,6 +8,7 @@ METRICS = [
     "mean_absolute_error",
     "R_squared",
     "logarithmic loss",
+    "recall"
 ]
 
 def get_metric(name: str):
@@ -29,6 +30,8 @@ def get_metric(name: str):
         return LogLoss()
     elif name == "accuracy":
         return Accuracy()
+    elif name == "recall":
+        return Recall()
 
 class Metric(ABC):
     """
@@ -38,11 +41,24 @@ class Metric(ABC):
     def __call__(self, 
                  ground_truth: np.ndarray, 
                  prediction: np.ndarray) -> float:
+        """
+        Calculates the metric based on the model's predictions 
+        and the actual values.
+        
+        Args:
+            ground_truth (np.ndarray): The actual target values.
+            prediction (np.ndarray): The predicted values from the model.
+        
+        Returns:
+            float: The calculated metric score.
+        """
         pass
 
 
 class MeanSquaredError(Metric):
-    """Regression metric that calculates the mean squared error"""
+    """
+    Regression metric that calculates the mean squared error
+    """
     def _call_(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
         """Calculates the mean squared error for a models predictions.
 
