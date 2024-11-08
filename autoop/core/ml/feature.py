@@ -19,4 +19,4 @@ class Feature:
         return self._type   
 
     def __str__(self) -> str:
-        raise NotImplementedError("To be implemented.")
+        return f"Feature(name={self._name}, type={self._type})"

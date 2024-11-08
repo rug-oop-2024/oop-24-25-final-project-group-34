@@ -11,7 +11,6 @@ import numpy as np
 
 
 class Pipeline():
-    
     def __init__(self, 
                  metrics: List[Metric],
                  dataset: Dataset, 
@@ -109,15 +108,28 @@ Pipeline(
             result = metric.evaluate(predictions, Y)
             self._metrics_results.append((metric, result))
         self._predictions = predictions
+    
+    def _evaluate_training_data(self):
+        X = self._compact_vectors(self._train_X)
+        Y = self._train_y
+        self._metrics_results_train = []
+        predictions = self._model.predict(X)
+        for metric in self._metrics:
+            result = metric.evaluate(predictions, Y)
+            self._metrics_results_train.append((metric, result))
+        self._predictions_train = predictions
 
     def execute(self):
         self._preprocess_features()
         self._split_data()
         self._train()
         self._evaluate()
+        self._evaluate_training_data()
         return {
             "metrics": self._metrics_results,
             "predictions": self._predictions,
+            "metrics training data": self._metrics_results_train,
+            "predictions training data": self._predictions_train
         }
         
 

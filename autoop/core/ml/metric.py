@@ -38,7 +38,7 @@ class Metric(ABC):
     Base class for all metrics.
     """
     @abstractmethod
-    def __call__(self, 
+    def evaluate(self, 
                  ground_truth: np.ndarray, 
                  prediction: np.ndarray) -> float:
         """
@@ -59,7 +59,7 @@ class MeanSquaredError(Metric):
     """
     Regression metric that calculates the mean squared error
     """
-    def _call_(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
+    def evaluate(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
         """Calculates the mean squared error for a models predictions.
 
         Args:
@@ -77,7 +77,7 @@ class MeanAbsoluteError(Metric):
     """
     Regression metric that calculates the mean absolute error
     """
-    def __call__(self,
+    def evaluate(self,
                  ground_truth: np.ndarray,
                  prediction: np.ndarray) -> float:
         """Calculates the mean absolute error for a models predictions
@@ -97,7 +97,7 @@ class RSquared(Metric):
     """
     Regression metric that calculates the R-squared
     """
-    def _call_(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
+    def evaluate(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
         """Calculates R-squared for the model's predictions.
 
         Args:
@@ -119,7 +119,7 @@ class LogLoss(Metric):
     """
     Classification metric to calculate logarithmic loss
     """
-    def __call__(self,
+    def evaluate(self,
                  ground_truth: np.ndarray,
                  prediction: np.ndarray) -> float:
         """Calculate the logarithmic loss of a models predictions.
@@ -147,7 +147,7 @@ class Accuracy(Metric):
     """
     Classification metric to calculate the Accuracy
     """
-    def _call_(self,
+    def evaluate(self,
                ground_truth: np.ndarray,
                prediction: np.ndarray) -> float:
         """
@@ -168,7 +168,7 @@ class Recall(Metric):
     """
     Classification metric to calculate the Recall
     """
-    def _call_(self,
+    def evaluate(self,
                ground_truth: np.ndarray,
                prediction: np.ndarray,
                num_classes: int) -> list:
