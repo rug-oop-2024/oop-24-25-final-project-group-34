@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
+import uuid
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
@@ -42,9 +43,15 @@ if uploaded_file is not None:
                     the dataset: {e}""")
 
 st.subheader("Manage Datasets")
-datasets = automl.registry.list(type="dataset")
+artifacts = automl.registry.list(type="dataset")
 
-if datasets:
+if artifacts:
+    datasets = [Dataset(name=artifact.name,
+                         asset_path=artifact.asset_path,
+                         data=artifact.data,
+                         version=artifact.version)
+                         for artifact in artifacts]
+
     dataset_names = [dataset.name for dataset in datasets]
     selected_dataset_name = st.selectbox("Select a Dataset to View or Delete", dataset_names)
 
@@ -54,12 +61,10 @@ if datasets:
     if selected_dataset:
         st.write("Preview of the Dataset: ")
         data = selected_dataset.read()
-        data = pd.read_csv(io.StringIO(data.decode("utf-8")))
         st.dataframe(data.head())
 
         if st.button("Delete the selected Dataset"):
             try:
-                st.write(selected_dataset.id)
                 automl.registry.delete(selected_dataset.id)
                 st.success(f"Dataset '{selected_dataset_name}' has been deleted.")
                 st.rerun()

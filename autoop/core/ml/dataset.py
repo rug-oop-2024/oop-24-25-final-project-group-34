@@ -7,8 +7,6 @@ import io
 class Dataset(Artifact):
     """A class to represent an ML dataset"""
     def __init__(self, *args, **kwargs):
-        if "id" not in kwargs:
-            kwargs["id"] = None
         super().__init__(type="dataset", *args, **kwargs)
 
     @staticmethod

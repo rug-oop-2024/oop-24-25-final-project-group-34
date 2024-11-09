@@ -1,6 +1,6 @@
 from copy import deepcopy
 from typing import Any
-import uuid
+import base64
 
 
 class Artifact:
@@ -11,8 +11,7 @@ class Artifact:
                  data: bytes = None,
                  version: str = None,
                  tags: list = [],
-                 metadata: dict = {},
-                 id: str = None
+                 metadata: dict = {}
                  ):
         """initializes the Artifact class"""
         self._type = type
@@ -22,7 +21,7 @@ class Artifact:
         self._version = version
         self._tags = tags
         self._metadata = metadata
-        self._id = id if id is not None else self.set_id()
+        self._id = base64.b64encode(asset_path.encode()).decode()
     
     @property
     def type(self) -> str:
@@ -82,12 +81,8 @@ class Artifact:
             self._metadata[key] = item
     
     @property
-    def id(self) -> str:
+    def id(self):
         return self._id
-    
-    @id.setter
-    def set_id(self):
-        self._id = str(uuid.uuid4())
     
     def read(self):
         """returns the raw data."""
