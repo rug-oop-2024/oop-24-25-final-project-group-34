@@ -5,7 +5,19 @@ from collections import Counter
 
 
 class KNearestNeighbor(Model):
-    def __init__(self, k: int = 3) -> None:
+    """
+    K-Nearest Neighbors model.
+    This class implements the KNN model, where the k-nearest neighbors
+    are used to classify data points based on their distances
+    from the training data.
+    """
+    def __init__(self, k: int = 3):
+        """
+        Initializes the KNearestNeighbor model.
+
+        Args:
+            k (int, optional): The number of neighbors.
+        """
         super().__init__()
         self._k = k
         self._parameters = {"observations": None,

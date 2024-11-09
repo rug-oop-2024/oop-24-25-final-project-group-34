@@ -14,3 +14,4 @@ class NaiveBayesModel(Model):
 
     def predict(self, observations: np.ndarray) -> np.ndarray:
         return self._model.predict(observations)
+

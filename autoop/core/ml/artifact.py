@@ -99,4 +99,5 @@ class Artifact:
             bytes: The newly saved data
         """
         self._data = new_data
+
         return self._data
