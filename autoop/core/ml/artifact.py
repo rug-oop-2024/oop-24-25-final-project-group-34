@@ -11,7 +11,9 @@ class Artifact:
                  data: bytes = None,
                  version: str = None,
                  tags: list = [],
-                 metadata: dict = {}):
+                 metadata: dict = {},
+                 id: str = None
+                 ):
         """initializes the Artifact class"""
         self._type = type
         self._name = name
@@ -20,7 +22,7 @@ class Artifact:
         self._version = version
         self._tags = tags
         self._metadata = metadata
-        self._id = str(uuid.uuid4())
+        self._id = id if id is not None else self.set_id()
     
     @property
     def type(self) -> str:
@@ -80,8 +82,12 @@ class Artifact:
             self._metadata[key] = item
     
     @property
-    def id(self):
+    def id(self) -> str:
         return self._id
+    
+    @id.setter
+    def set_id(self):
+        self._id = str(uuid.uuid4())
     
     def read(self):
         """returns the raw data."""

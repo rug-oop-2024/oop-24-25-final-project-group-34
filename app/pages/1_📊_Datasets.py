@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import io
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
@@ -29,4 +30,40 @@ if uploaded_file is not None:
     dataset_name = uploaded_file.name
     if dataframe is not None:
         dataset = convert_file(dataframe, dataset_name)
-        automl.registry.register(dataset)
+        if dataset is not None:
+            if st.button("Save Dataset"):
+                try:
+                    automl.registry.register(dataset)
+                    st.success(f"""Dataset '{dataset_name}'
+                    has been successfully saved!""")
+                    st.write(dataset.id)
+                except Exception as e:
+                    st.error(f"""An error occurred while saving
+                    the dataset: {e}""")
+
+st.subheader("Manage Datasets")
+datasets = automl.registry.list(type="dataset")
+
+if datasets:
+    dataset_names = [dataset.name for dataset in datasets]
+    selected_dataset_name = st.selectbox("Select a Dataset to View or Delete", dataset_names)
+
+    selected_dataset = next((data for data in datasets
+                             if data.name == selected_dataset_name), None)
+    
+    if selected_dataset:
+        st.write("Preview of the Dataset: ")
+        data = selected_dataset.read()
+        data = pd.read_csv(io.StringIO(data.decode("utf-8")))
+        st.dataframe(data.head())
+
+        if st.button("Delete the selected Dataset"):
+            try:
+                st.write(selected_dataset.id)
+                automl.registry.delete(selected_dataset.id)
+                st.success(f"Dataset '{selected_dataset_name}' has been deleted.")
+                st.rerun()
+            except Exception as e:
+                st.error(f"An error occurred while deleting the dataset: {e}")
+    else:
+        st.write("Dataset is empty")
