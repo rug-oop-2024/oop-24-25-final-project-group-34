@@ -45,7 +45,13 @@ class ArtifactRegistry():
         return artifacts
 
     def get(self, artifact_id: str) -> Artifact:
+        print(f"Trying to load artifact with id: {artifact_id}")
+        print(f"Database entries:", self._database.list("artifacts"))
+
         data = self._database.get("artifacts", artifact_id)
+        if data is None:
+            raise ValueError(f"Artifact with id {artifact_id} not found in database.")
+            
         return Artifact(
             name=data["name"],
             version=data["version"],

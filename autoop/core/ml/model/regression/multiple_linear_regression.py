@@ -9,7 +9,9 @@ class MultipleLinearRegression(Model):
     to the training data, and then predicts values.
     """
 
-    def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
+    def fit(self,
+            observations: np.ndarray,
+            ground_truth: np.ndarray) -> None:
         """
         This method fits the model to the training data.
         It creates a matrix, and calculates the optimal weights.
@@ -48,9 +50,8 @@ class MultipleLinearRegression(Model):
         Args:
             observations (np.ndarray): A matrix with each row representing
                 an observation and each column representing a feature.
-                and features of the observation.
         Returns:
-            array: Predicted target values as a 1D numpy array.
+            np.ndarray: Predicted target values as a 1D numpy array.
         Raises:
             ValueError: If parameters are empty.
         """

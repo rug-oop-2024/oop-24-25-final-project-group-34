@@ -9,7 +9,7 @@ class Lasso(Model):
     This class implements the lasso regression, which implements
     a penalty to prevent overfitting.
     """
-    def __init__(self, alpha=1.0):
+    def __init__(self, alpha=1.0) -> None:
         """
         This initalizes the Lasso regression model.
         This constructor initializes the Lasso regression model
@@ -26,7 +26,9 @@ class Lasso(Model):
         super().__init__()
         self.lasso = skLasso(alpha=alpha)
 
-    def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
+    def fit(self,
+            observations: np.ndarray,
+            ground_truth: np.ndarray) -> None:
         """
         This method fits the model to the training data.
         It uses the fit method from the scikit-learn library. The fit method

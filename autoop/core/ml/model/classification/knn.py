@@ -11,7 +11,7 @@ class KNearestNeighbor(Model):
     are used to classify data points based on their distances
     from the training data.
     """
-    def __init__(self, k: int = 3):
+    def __init__(self, k: int = 3) -> None:
         """
         Initializes the KNearestNeighbor model.
 
@@ -22,8 +22,10 @@ class KNearestNeighbor(Model):
         self._k = k
         self._parameters = {"observations": None,
                             "ground_truth": None}
-
-    def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
+    
+    def fit(self,
+            observations: np.ndarray,
+            ground_truth: np.ndarray) -> None:
         """
         Fits the model to the training data.
         It stores the observations and their corresponding
@@ -42,7 +44,7 @@ class KNearestNeighbor(Model):
         training points and returns the most common class of the
         three nearest training points.
         Returns:
-            array: Predicted class for the input data.
+            np.ndarray: Predicted class for the input data.
         Raises:
             ValueError: If parameters are empty.
         """
