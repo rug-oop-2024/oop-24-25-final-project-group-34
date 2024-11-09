@@ -60,9 +60,8 @@ class ArtifactRegistry():
     def delete(self, artifact_id: str):
         data = self._database.get("artifacts", artifact_id)
         self._storage.delete(data["asset_path"])
-        print({data["asset_path"]})
         self._database.delete("artifacts", artifact_id)
-        print(self._database, "database")
+        
     
 
 class AutoMLSystem:

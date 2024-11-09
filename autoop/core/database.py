@@ -83,7 +83,7 @@ class Database():
         keys = self._storage.list("")
         for key in keys:
             collection, id = key.split(os.sep)[-2:]
-            if not self._data.get(collection, id):
+            if not self._data.get(collection, {}).get(id):
                 self._storage.delete(f"{collection}{os.sep}{id}")
     
     def _load(self):

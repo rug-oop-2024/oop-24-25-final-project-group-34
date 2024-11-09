@@ -22,7 +22,8 @@ class Artifact:
         self._tags = tags
         self._metadata = metadata
         unique_code = f"{asset_path}-{name}"
-        self._id = base64.b64encode(unique_code.encode()).decode()
+        self._id = base64.b64encode(
+            unique_code.encode()).decode().replace("=", "_")
     
     @property
     def type(self) -> str:
