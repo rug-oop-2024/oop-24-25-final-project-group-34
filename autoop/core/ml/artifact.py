@@ -21,7 +21,8 @@ class Artifact:
         self._version = version
         self._tags = tags
         self._metadata = metadata
-        self._id = base64.b64encode(asset_path.encode()).decode()
+        unique_code = f"{asset_path}-{name}"
+        self._id = base64.b64encode(unique_code.encode()).decode()
     
     @property
     def type(self) -> str:
