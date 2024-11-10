@@ -15,7 +15,7 @@ class NaiveBayesModel(Model):
         self._type = "classification"
 
     @property
-    def type(self):
+    def type(self) -> str:
         """Public getter for the type variable."""
         return self._type
 

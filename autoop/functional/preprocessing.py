@@ -14,7 +14,7 @@ def preprocess_features(features: List[Feature],
     """Preprocess features.
     Args:
         features (List[Feature]): List of features.
-        dataset (Union[pd.DataFrame, Dataset]): Dataset object.
+        dataset (Union[pd.DataFrame, Dataset]): dataset object.
     Returns:
         List[str, Tuple[np.ndarray, dict]]: List of preprocessed features.
         Each ndarray of shape (N, ...)

@@ -7,14 +7,36 @@ from autoop.core.ml.dataset import Dataset
 automl = AutoMLSystem.get_instance()
 
 
-def upload_file(file):
+def upload_file(file) -> pd.DataFrame:
+    """Uploads a CSV file
+
+    Args:
+        file (type): A file object repreesenting
+        the uploaded CSV file.
+
+    Returns:
+        pd.DataFrame: A pandas dataframe representing
+        the uplaoded dataset.
+    """
     dataframe = pd.read_csv(file)
     st.write("Preview of the uploaded dataset: ")
     st.dataframe(dataframe.head())
     return dataframe
 
 
-def convert_file(file, dataset_name):
+def convert_file(file, dataset_name) -> Dataset:
+    """Converts the uploaded DataFrame into a Dataset object
+    with the specified dataset name.
+
+    Args:
+        file (pd.DataFrame): The data frame that is converted
+        into a dataset.
+        dataset_name (str): The name of the dataset.
+
+    Returns:
+        Dataset: A dataset object created from
+        the data frame.
+    """
     asset_path = f"./objects/{dataset_name}"
     dataset = Dataset.from_dataframe(data=file,
                                      name=dataset_name,
