@@ -160,6 +160,36 @@ def main():
         t_feature_types = next((feature["type"] for feature in list_feature
                                 if feature["name"] == target_feature), None)
 
+            if st.button("Train Model"):
+
+
+                input_features = [
+                    Feature(name=name, type=next(
+                    (feature.type for feature in
+                    features if feature.name == name),
+                     "")) for name in input_features
+                ]
+                target_feature = Feature(name=target_feature,
+                                         type=t_feature_types)
+
+                pipeline = Pipeline(
+                    metrics=selected_metrics,
+                    dataset=df,
+                    model=model_instance,
+                    input_features=input_features,
+                    target_feature=target_feature,
+                    split=split_ratio,
+                )
+
+                with st.spinner("Currently training the model..."):
+                    results = pipeline.execute()
+                
+                st.success("Model training completed!")
+                st.write("### Evaluation Results")
+                st.write("#### Training Metrics")
+                for metric, value in results["train_metrics"]:
+                    st.write(f"- **{metric.__class__.__name__}** {value}")
+
     else:
         st.warning("""Please select at least one input feature and
                    a target feature.""")
