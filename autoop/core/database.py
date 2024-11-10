@@ -49,12 +49,13 @@ class Database():
             id (str): The id of the data
 
         Returns:
-            Union[dict, None]: The data that was stored, or None if it doesn't exist
+            Union[dict, None]: The data that was stored, or None if it doesn't
+            exist
         """
         if not self._data.get(collection, None):
             return None
         return self._data[collection].get(id, None)
-    
+
     def delete(self, collection: str, id: str) -> None:
         """Delete a key from the database
 
@@ -78,7 +79,8 @@ class Database():
             collection (str): The collection to list the data from
 
         Returns:
-            List[Tuple[str, dict]]: A list of tuples containing the id and data for each item in the collection
+            List[Tuple[str, dict]]: A list of tuples containing the id and
+            data for each item in the collection
         """
         if not self._data.get(collection, None):
             return []
@@ -98,7 +100,8 @@ class Database():
             if not data:
                 continue
             for id, item in data.items():
-                self._storage.save(json.dumps(item).encode(), f"{collection}{os.sep}{id}")
+                self._storage.save(json.dumps(item).encode(),
+                                   f"{collection}{os.sep}{id}")
 
         # for things that were deleted, we need to remove them from the storage
         keys = self._storage.list("")
@@ -119,4 +122,3 @@ class Database():
             if collection not in self._data:
                 self._data[collection] = {}
             self._data[collection][id] = json.loads(data.decode())
-

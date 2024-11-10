@@ -1,7 +1,11 @@
 
 from autoop.core.ml.model.model import Model
-from autoop.core.ml.model.regression import MultipleLinearRegression, Lasso, SupportVectorRegression
-from autoop.core.ml.model.classification import KNearestNeighbor, DecisionTree, NaiveBayesModel
+from autoop.core.ml.model.regression import (MultipleLinearRegression,
+                                             Lasso,
+                                             SupportVectorRegression)
+from autoop.core.ml.model.classification import (KNearestNeighbor,
+                                                 DecisionTree,
+                                                 NaiveBayesModel)
 
 REGRESSION_MODELS = [
     "MultipleLinearRegression",
@@ -14,6 +18,7 @@ CLASSIFICATION_MODELS = [
     "DecisionTree",
     "NaiveBayesModel"
 ]
+
 
 def get_model(model_name: str) -> Model:
     """Factory function to get a model by name."""

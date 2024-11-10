@@ -1,5 +1,4 @@
 from copy import deepcopy
-from typing import Any
 import base64
 
 
@@ -8,7 +7,7 @@ class Artifact:
     A class to represent an Artifact.
     """
     def __init__(self,
-                 type:str,
+                 type: str,
                  name: str = None,
                  asset_path: str = None,
                  data: bytes = None,
@@ -44,7 +43,7 @@ class Artifact:
         unique_code = f"{asset_path}-{name}"
         self._id = base64.b64encode(
             unique_code.encode()).decode().replace("=", "_")
-    
+
     @property
     def type(self) -> str:
         """Public getter for the type attribute."""
@@ -69,26 +68,26 @@ class Artifact:
     def version(self) -> str:
         """Public getter for the version attribute."""
         return self._version
-    
+
     @property
     def tags(self) -> list:
         """Public getter for the tags attribute."""
         return deepcopy(self._tags)
-    
+
     @property
     def metadata(self) -> dict:
         """Public getter for the metadata attribute."""
         return deepcopy(self._metadata)
-    
+
     @property
     def id(self) -> str:
         """Public getter for the id attribute."""
         return self._id
-    
+
     def read(self) -> bytes:
         """returns the raw data."""
         return self._data
-    
+
     def save(self, new_data) -> bytes:
         """
         Saves the new data to the Artifact
@@ -101,5 +100,3 @@ class Artifact:
         """
         self._data = new_data
         return self._data
-
-

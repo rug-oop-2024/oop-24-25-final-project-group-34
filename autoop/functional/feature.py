@@ -4,7 +4,7 @@ from autoop.core.ml.feature import Feature
 
 
 def detect_feature_types(dataset: Dataset) -> List[Feature]:
-    """Assumption: only categorical and numerical features 
+    """Assumption: only categorical and numerical features
     and no NaN values.
     Args:
         dataset: Dataset

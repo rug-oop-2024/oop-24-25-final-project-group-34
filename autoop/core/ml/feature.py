@@ -12,20 +12,20 @@ class Feature:
         """
         self._name = name
         self._type = type
-    
+
     @property
     def name(self) -> str:
         """
         Public getter for the name attribute.
         """
-        return self._name   
-     
+        return self._name
+
     @property
     def type(self) -> str:
         """
         Public getter for the type attribute.
         """
-        return self._type   
+        return self._type
 
     def __str__(self) -> str:
         """

@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
-import io
-import uuid
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
 
 automl = AutoMLSystem.get_instance()
+
 
 def upload_file(file):
     dataframe = pd.read_csv(file)
@@ -14,13 +13,17 @@ def upload_file(file):
     st.dataframe(dataframe.head())
     return dataframe
 
+
 def convert_file(file, dataset_name):
     asset_path = f"./objects/{dataset_name}"
-    dataset = Dataset.from_dataframe(data=file, name=dataset_name, asset_path=asset_path)
+    dataset = Dataset.from_dataframe(data=file,
+                                     name=dataset_name,
+                                     asset_path=asset_path)
     if not dataset.data:
         st.error("Creating a dataset failed, no data available.")
         return None
     return dataset
+
 
 st.title("Dataset Management")
 st.header("Upload a new CSV file")
@@ -46,18 +49,19 @@ artifacts = automl.registry.list(type="dataset")
 
 if artifacts:
     datasets = [Dataset(name=artifact.name,
-                         asset_path=artifact.asset_path,
-                         data=artifact.data,
-                         version=artifact.version)
-                         for artifact in artifacts]
+                        asset_path=artifact.asset_path,
+                        data=artifact.data,
+                        version=artifact.version)
+                for artifact in artifacts]
     dataset_names = [dataset.name for dataset in datasets]
-    selected_dataset_name = st.selectbox("Select a Dataset to View or Delete", dataset_names)
+    selected_dataset_name = st.selectbox("Select a Dataset to View or Delete",
+                                         dataset_names)
 
     selected_dataset = next((data for data in datasets
                              if data.name == selected_dataset_name), None)
     st.write(selected_dataset.asset_path)
     st.write(selected_dataset.id)
-    
+
     if selected_dataset:
         st.write("Preview of the Dataset: ")
         data = selected_dataset.read()
@@ -65,7 +69,8 @@ if artifacts:
         if st.button("Delete the selected Dataset"):
             try:
                 automl.registry.delete(selected_dataset.id)
-                st.success(f"Dataset '{selected_dataset_name}' has been deleted.")
+                st.success(f"""Dataset '{selected_dataset_name}'
+                           has been deleted.""")
                 st.rerun()
             except Exception as e:
                 st.error(f"An error occurred while deleting the dataset: {e}")

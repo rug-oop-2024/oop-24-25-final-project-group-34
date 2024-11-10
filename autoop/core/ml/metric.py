@@ -17,21 +17,22 @@ class Metric(ABC):
     Base class for all metrics.
     """
     @abstractmethod
-    def evaluate(self, 
-                 ground_truth: np.ndarray, 
+    def evaluate(self,
+                 ground_truth: np.ndarray,
                  prediction: np.ndarray) -> float:
         """
-        Calculates the metric based on the model's predictions 
+        Calculates the metric based on the model's predictions
         and the actual values.
-        
+
         Args:
             ground_truth (np.ndarray): The actual target values.
             prediction (np.ndarray): The predicted values from the model.
-        
+
         Returns:
             float: The calculated metric score.
         """
         pass
+
 
 def get_metric(name: str) -> Metric:
     """returns the wanted matric
@@ -134,15 +135,15 @@ class LogLoss(Metric):
             prediction (np.ndarray): The predicted values from the model
 
         Returns:
-            float: The logarithmic loss value. The difference between the 
+            float: The logarithmic loss value. The difference between the
             predicted probability compared to the ground truth
         """
         prediction = np.clip(prediction, 1e-15, 1 - 1e-15)
-        
+
         if len(prediction.shape) > 1:
             prediction = prediction[np.arange(len(prediction)),
                                     ground_truth.astype(int)]
-        
+
         log_loss_value = -np.mean(ground_truth * np.log(prediction) +
                                   (1 - ground_truth) * np.log(1 - prediction))
         return log_loss_value
@@ -153,8 +154,8 @@ class Accuracy(Metric):
     Classification metric to calculate the Accuracy
     """
     def evaluate(self,
-               ground_truth: np.ndarray,
-               prediction: np.ndarray) -> float:
+                 ground_truth: np.ndarray,
+                 prediction: np.ndarray) -> float:
         """
         Calculates the Accuracy of a models predictions.
 
@@ -174,9 +175,9 @@ class Recall(Metric):
     Classification metric to calculate the Recall
     """
     def evaluate(self,
-               ground_truth: np.ndarray,
-               prediction: np.ndarray,
-               num_classes: int) -> List[float]:
+                 ground_truth: np.ndarray,
+                 prediction: np.ndarray,
+                 num_classes: int) -> List[float]:
         """Calculates the Recall of a models predictions.
 
         Args:
@@ -190,10 +191,12 @@ class Recall(Metric):
         recalls = []
 
         for class_label in range(num_classes):
-            tp = np.sum((ground_truth == class_label) & (prediction == class_label))
-            fn = np.sum((ground_truth == class_label) & (prediction != class_label))
+            tp = np.sum((ground_truth == class_label) &
+                        (prediction == class_label))
+            fn = np.sum((ground_truth == class_label) &
+                        (prediction != class_label))
 
             recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
             recalls.append(recall)
-        
+
         return recalls
