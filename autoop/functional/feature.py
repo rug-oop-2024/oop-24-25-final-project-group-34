@@ -13,6 +13,9 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
     """
     features = []
     data = dataset.read()
+
+    data = pd.read_csv(io.StringIO(data.decode("utf-8")))
+    
     for column in data.columns:
         if all(isinstance(value, (float, int))
                for value in data[column]):

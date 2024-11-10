@@ -4,6 +4,9 @@ import io
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
+from autoop.core.ml.feature import Feature
+from autoop.functional.feature import detect_feature_types
+from autoop.core.ml.pipeline import Pipeline
 
 from autoop.core.ml.model.classification.decision_tree_regression import DecisionTree
 from autoop.core.ml.model.classification.knn import KNearestNeighbor
@@ -12,6 +15,15 @@ from autoop.core.ml.model.classification.naive_bayes import NaiveBayesModel
 from autoop.core.ml.model.regression.lasso import Lasso
 from autoop.core.ml.model.regression.multiple_linear_regression import MultipleLinearRegression
 from autoop.core.ml.model.regression.support_vector_regression import SupportVectorRegression
+
+from autoop.core.ml.metric import (
+    MeanSquaredError,
+    MeanAbsoluteError,
+    RSquared,
+    LogLoss,
+    Accuracy,
+    Recall,
+)
 
 
 
@@ -36,58 +48,58 @@ if datasets:
     
     if selected_dataset:
         st.write("Preview of the uploaded dataset: ")
-        data = selected_dataset.read()
-        data = pd.read_csv(io.StringIO(data.decode("utf-8")))
+        data_bytes = selected_dataset.read()
+        data = pd.read_csv(io.StringIO(data_bytes.decode("utf-8")))
+
         st.dataframe(data.head())
 
-selected_dataset_name = st.selectbox("Select a dataset to load",
-options=names_dataset)
+        features = detect_feature_types(selected_dataset)
+        list_feature = [{"name": feature.name,
+                        "type": feature.type} for feature in features]
 
-if selected_dataset_name:
-    selected_dataset = next((data for data in datasets
-    if data.name == selected_dataset_name), None)
+        complete_features_names = [feature["name"] for feature in list_feature]
 
-    if selected_dataset:
-        loaded_dataset = automl.registry.get(selected_dataset.id)
+        target_feature = st.selectbox("Select Target Feature",
+        options=complete_features_names)
 
-    if isinstance(loaded_dataset, pd.DatFrame):
-        features = loaded_dataset.columns.tolist()
+        remaining_input_features = [
+            name for name in complete_features_names if name != target_feature
+        ]
 
         input_features = st.multiselect("Select Input Features",
-        options=features)
-        target_feature = st.selectbox("Select Target Featrue",
-        options=features)
+        options=remaining_input_features)
 
-        if input_features and target_features:
-            target_data = loaded_dataset[target_feature]
-            unique_values = target_data.nuunique()
 
-            if unique_values <= 20 or target_data.dtype == "object":
-                task_type = "Classification"
-            else:
+        if input_features and target_feature:
+            t_feature_types = next(
+                (feature["type"] for feature in list_feature
+                if feature["name"] == target_feature), None
+            )
+
+            if t_feature_types == "numerical":
                 task_type = "Regression"
+            else:
+                task_type = "Classification"
 
-            st.write("Detected Task Type: {task_type}")
-
-            if task_type == "Classification":
+            if task_type == "Regression":
+                model_options = ["Lasso",
+                                "Multiple Linear Regression",
+                                "Support Vector Regression"]
+                model_mapping = {
+                    "Lasso": Lasso,
+                    "Multiple Linear Regression": MultipleLinearRegression,
+                    "Support Vector Regression": SupportVectorRegression,
+                }
+            else:
                 model_options = ["Decision Tree",
                                 "K-Nearest Neighbor",
                                 "Naive Bayes"]
+
                 model_mapping = {
                     "Decision Tree": DecisionTree,
                     "K-Nearest Neighbor": KNearestNeighbor,
                     "Naive Bayes": NaiveBayesModel,
-                }
-            else:
-                model_options = ["Lasso",
-                                "Multiple Linear Regression",
-                                "Support Vector Regression"]
-
-                model_mapping = {
-                    "Lasso": Lasso,
-                    "Multiple Linear Regeression": MultipleLinearRegression,
-                    "Support Vector Regression": SupportVectorRegression,
-                }
+                    }
 
             selected_model = st.selectbox(f"""Select a model for 
                                         {task_type}""",
@@ -97,4 +109,51 @@ if selected_dataset_name:
             st.write(f"You selected the {selected_model} model.")
 
             model_instance = selected_model_class()
-            st.write(f"The initialized model instance: {model_instance}")
+
+            split_ratio = st.slider(
+                "Select Percentage for Training Data",
+                min_value = 0.1,
+                max_value = 0.9,
+                value = 0.8,
+                step = 0.05,
+            )
+
+            if task_type == "Regression":
+                metric_options = {
+                    "Mean Squared Error": MeanSquaredError,
+                    "Mean Absolute Error": MeanAbsoluteError,
+                    "RSquared": RSquared,
+                }
+            else:
+                metric_options = {
+                    "Log Loss": LogLoss,
+                    "Accuracy": Accuracy,
+                    "Recall": Recall,
+                }
+
+            metric_names = list(metric_options.keys())
+
+            selected_metric_names = st.multiselect(
+                "Select Metrics",
+                metric_names,
+                default = metric_names,
+            )
+            selected_metrics = {name: metric_options[name]()
+                                for name in selected_metric_names
+                                }
+
+            st.markdown(f'''
+            **Pipeline Summary**
+
+            - **Dataset**: {selected_dataset_name}
+            - **Target Feature**: {target_feature}
+            - **Input Features**: {", ".join(input_features)}
+            - **Selected Model**: {selected_model}
+            - **Split Ratio**: {split_ratio}
+            - **Chosen Metrics**: {", ".join(selected_metric_names)}
+            ''')
+
+    else:
+        st.warning("Please select at least one input feature.")
+else:
+    st.warning("No datasets available. Please upload a dataset to proceed.")
