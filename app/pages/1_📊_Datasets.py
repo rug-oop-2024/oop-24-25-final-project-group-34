@@ -60,8 +60,6 @@ if artifacts:
 
     selected_dataset = next((data for data in datasets
                              if data.name == selected_dataset_name), None)
-    st.write(selected_dataset.asset_path)
-    st.write(selected_dataset.id)
 
     if selected_dataset:
         st.write("Preview of the Dataset: ")

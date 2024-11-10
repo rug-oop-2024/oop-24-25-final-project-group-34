@@ -36,6 +36,7 @@ class SupportVectorRegression(Model):
             ground_truth (np.ndarray): Target labels that correspond
             to each observation in the training data.
         """
+        ground_truth = ground_truth.ravel()
         self.svr.fit(observations, ground_truth)
         self._parameters = {
             "support_vectors": self.svr.support_vectors_,

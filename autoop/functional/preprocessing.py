@@ -1,24 +1,29 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from autoop.core.ml.feature import Feature
-from autoop.core.ml.dataset import Dataset
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+import pandas as pd
+from autoop.core.ml.dataset import Dataset
 
 
 def preprocess_features(features: List[Feature],
-                        dataset: Dataset) -> List[Tuple[str,
-                                                        np.ndarray,
-                                                        dict]]:
+                        dataset: Union[pd.DataFrame,
+                                       Dataset]) -> List[Tuple[str,
+                                                               np.ndarray,
+                                                               dict]]:
     """Preprocess features.
     Args:
         features (List[Feature]): List of features.
-        dataset (Dataset): Dataset object.
+        dataset (Union[pd.DataFrame, Dataset]): Dataset object.
     Returns:
         List[str, Tuple[np.ndarray, dict]]: List of preprocessed features.
         Each ndarray of shape (N, ...)
     """
     results = []
-    raw = dataset.read()
+    if isinstance(dataset, pd.DataFrame):
+        raw = dataset
+    else:
+        raw = dataset.read()
     for feature in features:
         if feature.type == "categorical":
             encoder = OneHotEncoder()

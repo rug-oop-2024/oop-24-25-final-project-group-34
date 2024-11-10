@@ -23,6 +23,10 @@ class MultipleLinearRegression(Model):
                 true values of the dependent variable for each observation
                 in the matrix.
         """
+        if len(observations.shape) == 1:
+            observations = observations.reshape(-1, 1)
+        ground_truth = ground_truth.ravel()
+
         assert len(observations.shape) == 2
         assert len(ground_truth.shape) == 1
 
@@ -63,3 +67,13 @@ class MultipleLinearRegression(Model):
         prediction = matrix.dot(self._parameters["weights"])
 
         return np.array(prediction)
+
+    @property
+    def parameters(self) -> dict:
+        """
+        Public getter for parameters.
+        """
+        if self._parameters is None:
+            raise ValueError("Model not fitted. Call 'fit' with appropriate "
+                             "arguments before using 'get_parameters'.")
+        return self._parameters
