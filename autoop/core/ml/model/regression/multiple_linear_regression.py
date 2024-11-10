@@ -11,7 +11,8 @@ class MultipleLinearRegression(Model):
 
     def fit(self,
             observations: np.ndarray,
-            ground_truth: np.ndarray) -> None:
+            ground_truth: np.ndarray,
+            regularization_strength: float = 1e-5) -> None:
         """
         This method fits the model to the training data.
         It creates a matrix, and calculates the optimal weights.
@@ -34,9 +35,13 @@ class MultipleLinearRegression(Model):
         matrix_b = np.hstack((observations, added_ones))
         transposed = np.transpose(matrix_b)
 
-        optimal_weights = np.matmul(np.linalg.inv
-                                    (np.matmul(transposed, matrix_b)),
-                                    (np.matmul(transposed, ground_truth)))
+        regularization_matrix = (regularization_strength *
+                                 np.eye(matrix_b.shape[1]))
+        matrix_inv = np.linalg.inv(np.matmul(transposed, matrix_b) +
+                                   regularization_matrix)
+
+        optimal_weights = np.matmul(matrix_inv,
+                                    np.matmul(transposed, ground_truth))
 
         self._parameters = {
             "weights": optimal_weights

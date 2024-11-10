@@ -5,13 +5,19 @@ from autoop.core.ml.model import Model
 
 class NaiveBayesModel(Model):
     """Naive Bayes Model
-    
+
     This model is a probabilistic classifier based
     on Bayes Theorem.
     """
     def __init__(self) -> None:
         """Initializes the Naive Bayes model."""
         self._model = GaussianNB()
+        self._type = "classification"
+
+    @property
+    def type(self):
+        """Public getter for the type variable."""
+        return self._type
 
     def fit(self,
             observations: np.ndarray,
@@ -28,6 +34,9 @@ class NaiveBayesModel(Model):
             observations (np.ndarray): The training data (features)
             ground_truth (np.ndarray): The true labels (target class)
         """
+        if ground_truth.ndim == 2:
+            ground_truth = np.argmax(ground_truth, axis=1)
+
         return self._model.fit(observations, ground_truth)
 
     def predict(self, observations: np.ndarray) -> np.ndarray:

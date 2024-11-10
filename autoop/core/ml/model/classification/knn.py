@@ -22,7 +22,13 @@ class KNearestNeighbor(Model):
         self._k = k
         self._parameters = {"observations": None,
                             "ground_truth": None}
-    
+        self._type = "classification"
+
+    @property
+    def type(self):
+        """Public getter for the type variable."""
+        return self._type
+
     def fit(self,
             observations: np.ndarray,
             ground_truth: np.ndarray) -> None:
@@ -71,7 +77,7 @@ class KNearestNeighbor(Model):
                                    self._parameters["observations"], axis=1)
         sorted_indices = np.argsort(distances)
         k_indices = sorted_indices[:self._k]
-        k_nearest_labels = [self._parameters["ground_truth"]
-                            [i] for i in k_indices]
+        k_nearest_labels = [tuple(self._parameters["ground_truth"]
+                            [i]) for i in k_indices]
         most_common = Counter(k_nearest_labels).most_common(1)
         return most_common[0][0]

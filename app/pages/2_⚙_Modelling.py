@@ -6,6 +6,7 @@ from app.core.system import AutoMLSystem
 from autoop.core.ml.feature import Feature
 from autoop.functional.feature import detect_feature_types
 from autoop.core.ml.pipeline import Pipeline
+from autoop.core.ml.artifact import Artifact
 
 from autoop.core.ml.model.classification import (DecisionTree,
                                                  KNearestNeighbor,
@@ -132,9 +133,10 @@ def display_pipeline_summary(selected_dataset_name, target_feature,
 def execute_pipeline(pipeline):
     results = pipeline.execute()
     st.write("## Results")
+    st.write("### Test Data Results")
     for metric, result in results["metrics"]:
         st.write(f"{metric.__class__.__name__}: {result:.4f}")
-    st.write("## Training Data Results")
+    st.write("### Training Data Results")
     for metric, result in results["metrics training data"]:
         st.write(f"{metric.__class__.__name__} (Training): {result:.4f}")
 
@@ -197,6 +199,34 @@ def main():
 
     if st.button("Train Model"):
         execute_pipeline(pipeline)
+
+    st.write("### Save Pipeline")
+    pipeline_name = st.text_input("Enter the pipeline name:")
+    pipeline_version = st.text_input("Enter the pipeline version:",
+                                     value="1.0.0")
+    if st.button("Save Pipeline"):
+        if pipeline_name and pipeline_version:
+            artifacts = []
+            for data in pipeline.artifacts:
+                with open(data["asset_path"], "rb") as file:
+                    artifact_data = file.read()
+                artifact = Artifact(
+                    name=f"{pipeline_name}_{data['name']}",
+                    version=pipeline_version,
+                    asset_path=f"""pipelines/{pipeline_name}/
+                    {data['name']}""",
+                    type="Pipeline",
+                    data=artifact_data
+                )
+                artifacts.append(artifact)
+
+            for artifact in artifacts:
+                automl.registry.register(artifact)
+                st.success((f"""Pipeline '{pipeline_name}'
+                            version '{pipeline_version}'
+                            saved successfully!"""))
+    else:
+        st.warning("Please provide an name and version.")
 
 
 main()

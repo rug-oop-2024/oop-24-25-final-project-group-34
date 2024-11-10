@@ -16,6 +16,12 @@ class DecisionTree(Model):
         """
         super().__init__()
         self._model = DecisionTreeClassifier()
+        self._type = "classification"
+
+    @property
+    def type(self):
+        """Public getter for the type variable."""
+        return self._type
 
     def fit(self,
             observations: np.ndarray,
@@ -32,7 +38,7 @@ class DecisionTree(Model):
         self._model.fit(observations, ground_truth)
 
     def predict(self, observations: np.ndarray) -> np.ndarray:
-        """This method predicts the target. 
+        """This method predicts the target.
 
         Args:
             observations (np.ndarray): An input observation
@@ -41,4 +47,4 @@ class DecisionTree(Model):
         Returns:
             np.ndarray: Returns the predicted target values.
         """
-        return self._model.predict(observations)
+        return self._model.predict_proba(observations)

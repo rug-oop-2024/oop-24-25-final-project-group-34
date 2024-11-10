@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List
 import numpy as np
 
 METRICS = [
@@ -138,6 +137,7 @@ class LogLoss(Metric):
             float: The logarithmic loss value. The difference between the
             predicted probability compared to the ground truth
         """
+        ground_truth = np.array(ground_truth)
         prediction = np.clip(prediction, 1e-15, 1 - 1e-15)
 
         if len(prediction.shape) > 1:
@@ -176,8 +176,8 @@ class Recall(Metric):
     """
     def evaluate(self,
                  ground_truth: np.ndarray,
-                 prediction: np.ndarray,
-                 num_classes: int) -> List[float]:
+                 prediction: np.ndarray
+                 ) -> float:
         """Calculates the Recall of a models predictions.
 
         Args:
@@ -186,8 +186,10 @@ class Recall(Metric):
             num_classes (int): The number of classes in the dataset
 
         Returns:
-            List[float]: A list of recall values for each class
+            float: A list of recall values for each class
         """
+
+        num_classes = len(np.unique(ground_truth))
         recalls = []
 
         for class_label in range(num_classes):
@@ -199,4 +201,4 @@ class Recall(Metric):
             recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
             recalls.append(recall)
 
-        return recalls
+        return np.mean(recalls)
