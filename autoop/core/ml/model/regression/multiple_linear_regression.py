@@ -35,10 +35,10 @@ class MultipleLinearRegression(Model):
         matrix_b = np.hstack((observations, added_ones))
         transposed = np.transpose(matrix_b)
 
-        regularization_matrix = (regularization_strength *
-                                 np.eye(matrix_b.shape[1]))
-        matrix_inv = np.linalg.inv(np.matmul(transposed, matrix_b) +
-                                   regularization_matrix)
+        regularization_matrix = (
+            regularization_strength * np.eye(matrix_b.shape[1]))
+        matrix_inv = np.linalg.inv(
+            np.matmul(transposed, matrix_b) + regularization_matrix)
 
         optimal_weights = np.matmul(matrix_inv,
                                     np.matmul(transposed, ground_truth))

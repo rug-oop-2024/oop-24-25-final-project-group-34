@@ -98,18 +98,22 @@ def get_metric(task_type):
                         "Mean Absolute Error": MeanAbsoluteError,
                         "RSquared": RSquared,
                 }
+        default_metrics = ["Mean Squared Error",
+                           "Mean Absolute Error",
+                           "RSquared"]
     else:
         metric_options = {
                         "Log Loss": LogLoss,
                         "Accuracy": Accuracy,
                         "Recall": Recall,
                 }
+        default_metrics = ["Accuracy", "Recall"]
 
     metric_names = list(metric_options.keys())
 
     selected_metric_names = st.multiselect("Select Metrics",
                                            metric_names,
-                                           default=metric_names)
+                                           default=default_metrics)
     selected_metrics = {name: metric_options[name]()
                         for name in selected_metric_names}
     return selected_metrics
@@ -162,36 +166,6 @@ def main():
         t_feature_types = next((feature["type"] for feature in list_feature
                                 if feature["name"] == target_feature), None)
 
-            if st.button("Train Model"):
-
-
-                input_features = [
-                    Feature(name=name, type=next(
-                    (feature.type for feature in
-                    features if feature.name == name),
-                     "")) for name in input_features
-                ]
-                target_feature = Feature(name=target_feature,
-                                         type=t_feature_types)
-
-                pipeline = Pipeline(
-                    metrics=selected_metrics,
-                    dataset=df,
-                    model=model_instance,
-                    input_features=input_features,
-                    target_feature=target_feature,
-                    split=split_ratio,
-                )
-
-                with st.spinner("Currently training the model..."):
-                    results = pipeline.execute()
-                
-                st.success("Model training completed!")
-                st.write("### Evaluation Results")
-                st.write("#### Training Metrics")
-                for metric, value in results["train_metrics"]:
-                    st.write(f"- **{metric.__class__.__name__}** {value}")
-
     else:
         st.warning("""Please select at least one input feature and
                    a target feature.""")
@@ -234,6 +208,9 @@ def main():
     pipeline_name = st.text_input("Enter the pipeline name:")
     pipeline_version = st.text_input("Enter the pipeline version:",
                                      value="1.0.0")
+    st.write("""You can click me, but I wont work yet.
+                If you would like this beautiful button to work
+                we require a deadline extension of a week.""")
     if st.button("Save Pipeline"):
         if pipeline_name and pipeline_version:
             artifacts = []
