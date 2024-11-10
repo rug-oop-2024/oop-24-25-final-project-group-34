@@ -66,6 +66,7 @@ if artifacts:
             try:
                 automl.registry.delete(selected_dataset.id)
                 st.success(f"Dataset '{selected_dataset_name}' has been deleted.")
+                st.rerun()
             except Exception as e:
                 st.error(f"An error occurred while deleting the dataset: {e}")
     else:

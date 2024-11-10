@@ -5,16 +5,33 @@ from autoop.core.storage import LocalStorage, NotFoundError
 import random
 import tempfile
 
-class TestStorage(unittest.TestCase):
 
+class TestStorage(unittest.TestCase):
+    """
+    Unit tests for the localstorage class. will test saving, loading,
+    deleting and list operations.
+    """
     def setUp(self):
+        """
+        Sets up a storage for the testing.
+        """
         temp_dir = tempfile.mkdtemp()
         self.storage = LocalStorage(temp_dir)
 
     def test_init(self):
+        """
+        Test the initialisation of the storage.
+        """
         self.assertIsInstance(self.storage, LocalStorage)
 
     def test_store(self):
+        """
+        Tests saving and loading a into and from localstorage
+
+        Verifies:
+        A file can be saved and loaded correctly.
+        Loading a non-existing file will raise a NotFoundError.
+        """
         key = str(random.randint(0, 100))
         test_bytes = bytes([random.randint(0, 255) for _ in range(100)])
         key = "test/path"
@@ -28,6 +45,13 @@ class TestStorage(unittest.TestCase):
             self.assertIsInstance(e, NotFoundError)
 
     def test_delete(self):
+        """
+        Tests deleting a file from LocalStorage
+
+        Steps:
+        It first saves a file, then deletes it and then tests
+        if it raises a NotFoundError.
+        """
         key = str(random.randint(0, 100))
         test_bytes = bytes([random.randint(0, 255) for _ in range(100)])
         key = "test/path"
@@ -39,6 +63,13 @@ class TestStorage(unittest.TestCase):
             self.assertIsInstance(e, NotFoundError)
 
     def test_list(self):
+        """
+        Tests listing a file in the LocalStorage.
+
+        Steps:
+        Saves several files with random names.
+        Checks if all the file names have been added to the list.
+        """
         key = str(random.randint(0, 100))
         test_bytes = bytes([random.randint(0, 255) for _ in range(100)])
         random_keys = [f"test/{random.randint(0, 100)}" for _ in range(10)]

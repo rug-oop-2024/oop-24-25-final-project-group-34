@@ -14,11 +14,26 @@ from autoop.core.ml.feature import Feature  # noqa : E402
 from autoop.functional.feature import detect_feature_types  # noqa : E402
 
 class TestFeatures(unittest.TestCase):
-
+    """
+    Unit tests for the feature detection. Both the continuous and
+    categorical features in the dataset.
+    """
     def setUp(self) -> None:
+        """
+        Sets up the initial state.
+        """
         pass
 
     def test_detect_features_continuous(self):
+        """
+        Tests the feature detection of continuous data.
+
+        - Sets up the iris dataset.
+        - will detect feature types.
+        - will check if the feature list is a list with the
+        right length.
+        - will check if features are correct.
+        """
         iris = load_iris()
         df = pd.DataFrame(
             iris.data,
@@ -31,7 +46,7 @@ class TestFeatures(unittest.TestCase):
         )
         self.X = iris.data
         self.y = iris.target
-        features = detect_feature_types(dataset) # failing rn
+        features = detect_feature_types(dataset)
         self.assertIsInstance(features, list)
         self.assertEqual(len(features), 4)
         for feature in features:
@@ -40,6 +55,16 @@ class TestFeatures(unittest.TestCase):
             self.assertEqual(feature.type, "numerical")
 
     def test_detect_features_with_categories(self):
+        """
+        Tests the feature detection of categorical data.
+
+        Sets up adult dataset.
+        Will check if the feature list is a list with the
+        right length.
+        Checks if the features are a Feature
+        Checks if the function can distinguish between categorical
+        and numerical
+        """
         data = fetch_openml(name="adult", version=1, parser="auto")
         df = pd.DataFrame(
             data.data,
@@ -50,7 +75,7 @@ class TestFeatures(unittest.TestCase):
             asset_path="adult.csv",
             data=df,
         )
-        features = detect_feature_types(dataset) # this line
+        features = detect_feature_types(dataset)
         self.assertIsInstance(features, list)
         self.assertEqual(len(features), 14)
         numerical_columns = [

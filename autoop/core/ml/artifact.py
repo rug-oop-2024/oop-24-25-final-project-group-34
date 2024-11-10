@@ -4,6 +4,9 @@ import base64
 
 
 class Artifact:
+    """
+    A class to represent an Artifact.
+    """
     def __init__(self,
                  type:str,
                  name: str = None,
@@ -13,7 +16,24 @@ class Artifact:
                  tags: list = [],
                  metadata: dict = {}
                  ):
-        """initializes the Artifact class"""
+        """
+        Initializes the Artifact class.
+
+        Args:
+            type (str): The type of the Artifact.
+            name (str, optional): The name of the Artifact.
+                Defaults to None.
+            asset_path (str, optional): The asset path of the Artifact.
+                Defaults to None.
+            data (bytes, optional): The data of the Artifact.
+                Defaults to None.
+            version (str, optional): The version of the Artifact.
+                Defaults to None.
+            tags (list, optional): The tags of the Artifact.
+                Defaults to [].
+            metadata (dict, optional): The metadata of the Artifact.
+                Defaults to {}.
+        """
         self._type = type
         self._name = name
         self._asset_path = asset_path
@@ -27,70 +47,58 @@ class Artifact:
     
     @property
     def type(self) -> str:
+        """Public getter for the type attribute."""
         return self._type
-
-    @type.setter
-    def type(self, new_type: str) -> None:
-        self._type = new_type
 
     @property
     def name(self) -> str:
+        """Public getter for the name attribute."""
         return self._name
 
-    @name.setter
-    def name(self, new_name: str) -> None:
-        self._name = new_name
-
     @property
-    def asset_path(self):
+    def asset_path(self) -> str:
+        """Public getter for the asset_path attribute."""
         return self._asset_path
-    
-    @asset_path.setter
-    def asset_path(self, new_asset_path: str):
-        self._asset_path = new_asset_path
 
     @property
-    def data(self):
+    def data(self) -> bytes:
+        """Public getter for the data attribute."""
         return self._data
-    
-    @data.setter
-    def data(self, new_data: bytes):
-        self._data = new_data
 
     @property
-    def version(self):
+    def version(self) -> str:
+        """Public getter for the version attribute."""
         return self._version
     
-    @version.setter
-    def version(self, new_version: str):
-        self._version = new_version
-    
     @property
-    def tags(self):
+    def tags(self) -> list:
+        """Public getter for the tags attribute."""
         return deepcopy(self._tags)
     
-    @tags.setter
-    def tags(self, new_tag: Any):
-        self._tags.append(new_tag)
-    
     @property
-    def metadata(self):
+    def metadata(self) -> dict:
+        """Public getter for the metadata attribute."""
         return deepcopy(self._metadata)
-
-    @metadata.setter
-    def metadata(self, new_metadata: dict):
-        for key, item in new_metadata.items():
-            self._metadata[key] = item
     
     @property
-    def id(self):
+    def id(self) -> str:
+        """Public getter for the id attribute."""
         return self._id
     
-    def read(self):
+    def read(self) -> bytes:
         """returns the raw data."""
         return self._data
     
-    def save(self, new_data):
+    def save(self, new_data) -> bytes:
+        """
+        Saves the new data to the Artifact
+
+        Args:
+            new_data (bytes): The new data to be saved
+
+        Returns:
+            bytes: The newly saved data
+        """
         self._data = new_data
         return self._data
 

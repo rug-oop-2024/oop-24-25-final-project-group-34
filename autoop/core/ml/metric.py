@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import List
 import numpy as np
 
 METRICS = [
@@ -11,27 +11,6 @@ METRICS = [
     "recall"
 ]
 
-def get_metric(name: str):
-    """returns the wanted matric
-
-    Args:
-        name (str): name of the wanted metric
-
-    Returns:
-        _type: the wanted metric
-    """
-    if name == "mean_squared_error":
-        return MeanSquaredError()
-    elif name == "mean_absolute_error":
-        return MeanAbsoluteError()
-    elif name == "R_squared":
-        return RSquared()
-    elif name == "logarithmic loss":
-        return LogLoss()
-    elif name == "accuracy":
-        return Accuracy()
-    elif name == "recall":
-        return Recall()
 
 class Metric(ABC):
     """
@@ -54,12 +33,36 @@ class Metric(ABC):
         """
         pass
 
+def get_metric(name: str) -> Metric:
+    """returns the wanted matric
+
+    Args:
+        name (str): name of the wanted metric
+
+    Returns:
+        _type: the wanted metric
+    """
+    if name == "mean_squared_error":
+        return MeanSquaredError()
+    elif name == "mean_absolute_error":
+        return MeanAbsoluteError()
+    elif name == "R_squared":
+        return RSquared()
+    elif name == "logarithmic loss":
+        return LogLoss()
+    elif name == "accuracy":
+        return Accuracy()
+    elif name == "recall":
+        return Recall()
+
 
 class MeanSquaredError(Metric):
     """
     Regression metric that calculates the mean squared error
     """
-    def evaluate(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
+    def evaluate(self,
+                 ground_truth: np.ndarray,
+                 prediction: np.ndarray) -> float:
         """Calculates the mean squared error for a models predictions.
 
         Args:
@@ -97,7 +100,9 @@ class RSquared(Metric):
     """
     Regression metric that calculates the R-squared
     """
-    def evaluate(self, ground_truth: np.ndarray, prediction: np.ndarray) -> float:
+    def evaluate(self,
+                 ground_truth: np.ndarray,
+                 prediction: np.ndarray) -> float:
         """Calculates R-squared for the model's predictions.
 
         Args:
@@ -171,7 +176,7 @@ class Recall(Metric):
     def evaluate(self,
                ground_truth: np.ndarray,
                prediction: np.ndarray,
-               num_classes: int) -> list:
+               num_classes: int) -> List[float]:
         """Calculates the Recall of a models predictions.
 
         Args:
@@ -180,7 +185,7 @@ class Recall(Metric):
             num_classes (int): The number of classes in the dataset
 
         Returns:
-            list: A list of recall values for each class
+            List[float]: A list of recall values for each class
         """
         recalls = []
 
