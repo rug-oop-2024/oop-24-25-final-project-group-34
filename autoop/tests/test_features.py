@@ -1,17 +1,40 @@
 import unittest
 from sklearn.datasets import load_iris, fetch_openml
 import pandas as pd
+import os
+import sys
 
-from autoop.core.ml.dataset import Dataset
-from autoop.core.ml.feature import Feature
-from autoop.functional.feature import detect_feature_types
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+root_dir = os.path.dirname(parent_dir)
+sys.path.insert(0, root_dir)
+
+from autoop.core.ml.dataset import Dataset  # noqa : E402
+from autoop.core.ml.feature import Feature  # noqa : E402
+from autoop.functional.feature import detect_feature_types  # noqa : E402
+
 
 class TestFeatures(unittest.TestCase):
-
+    """
+    Unit tests for the feature detection. Both the continuous and
+    categorical features in the dataset.
+    """
     def setUp(self) -> None:
+        """
+        Sets up the initial state.
+        """
         pass
 
     def test_detect_features_continuous(self):
+        """
+        Tests the feature detection of continuous data.
+
+        - Sets up the iris dataset.
+        - will detect feature types.
+        - will check if the feature list is a list with the
+        right length.
+        - will check if features are correct.
+        """
         iris = load_iris()
         df = pd.DataFrame(
             iris.data,
@@ -31,8 +54,18 @@ class TestFeatures(unittest.TestCase):
             self.assertIsInstance(feature, Feature)
             self.assertEqual(feature.name in iris.feature_names, True)
             self.assertEqual(feature.type, "numerical")
-        
+
     def test_detect_features_with_categories(self):
+        """
+        Tests the feature detection of categorical data.
+
+        Sets up adult dataset.
+        Will check if the feature list is a list with the
+        right length.
+        Checks if the features are a Feature
+        Checks if the function can distinguish between categorical
+        and numerical
+        """
         data = fetch_openml(name="adult", version=1, parser="auto")
         df = pd.DataFrame(
             data.data,
@@ -66,7 +99,13 @@ class TestFeatures(unittest.TestCase):
         for feature in features:
             self.assertIsInstance(feature, Feature)
             self.assertEqual(feature.name in data.feature_names, True)
-        for detected_feature in filter(lambda x: x.name in numerical_columns, features):
+        for detected_feature in filter(lambda x: x.name in numerical_columns,
+                                       features):
             self.assertEqual(detected_feature.type, "numerical")
-        for detected_feature in filter(lambda x: x.name in categorical_columns, features):
+        for detected_feature in filter(lambda x: x.name in categorical_columns,
+                                       features):
             self.assertEqual(detected_feature.type, "categorical")
+
+
+if __name__ == "__main__":
+    unittest.main()
