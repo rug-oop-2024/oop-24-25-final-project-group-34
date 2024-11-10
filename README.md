@@ -154,16 +154,16 @@ If you did not implement the feature
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
 | Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |                      |         | |
-| `ML/artifact`                         | NF           |                      |         | |
-| `ML/feature`                          | NF           |                      |         | |
-| `ML/metric`                           | NF           |                      |         | |
-| `ML/metric/extensions`                | FN           |                      |         | |
-| `ML/model`                            | NF           |                      |         | |
-| `ML/model/extensions`                 | FN           |                      |         | |
-| `ML/pipeline/evaluation`              | FN           |                      |         | | 
-| `ST/page/datasets`                    | NF           |                      |         | |
-| `ST/datasets/management/create`       | FN           |                      |         | |
+| `ML/detect-features`                  | FN           |   Leonie             |         | |
+| `ML/artifact`                         | NF           |   Kim                |         | |
+| `ML/feature`                          | NF           |   Kim                |         | |
+| `ML/metric`                           | NF           |   Both               |         | |
+| `ML/metric/extensions`                | FN           |   Both               |         | |
+| `ML/model`                            | NF           |   Both               |         | |
+| `ML/model/extensions`                 | FN           |   Both               |         | |
+| `ML/pipeline/evaluation`              | FN           |   Kim                |         | | 
+| `ST/page/datasets`                    | NF           |   Leonie             |         | |
+| `ST/datasets/management/create`       | FN           |   Both               |         | |
 | `ST/datasets/management/save`         | FN           |                      |         | |
 | `ST/page/modelling`                   | NF           |                      |         | |
 | `ST/modelling/datasets/list`          | FN           |                      |         | |
