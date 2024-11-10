@@ -143,9 +143,9 @@ class LogLoss(Metric):
         if len(prediction.shape) > 1:
             prediction = prediction[np.arange(len(prediction)),
                                     ground_truth.astype(int)]
-
-        log_loss_value = -np.mean(ground_truth * np.log(prediction) +
-                                  (1 - ground_truth) * np.log(1 - prediction))
+        first_part = ground_truth * np.log(prediction)
+        second_part = (1 - ground_truth) * np.log(1 - prediction)
+        log_loss_value = -np.mean(first_part + second_part)
         return log_loss_value
 
 
@@ -175,8 +175,8 @@ class Recall(Metric):
     Classification metric to calculate the Recall
     """
     def evaluate(self,
-                 ground_truth: np.ndarray,
-                 prediction: np.ndarray
+                 gt: np.ndarray,
+                 pred: np.ndarray
                  ) -> float:
         """Calculates the Recall of a models predictions.
 
@@ -189,14 +189,12 @@ class Recall(Metric):
             float: A list of recall values for each class
         """
 
-        num_classes = len(np.unique(ground_truth))
+        num_classes = len(np.unique(gt))
         recalls = []
 
         for class_label in range(num_classes):
-            tp = np.sum((ground_truth == class_label) &
-                        (prediction == class_label))
-            fn = np.sum((ground_truth == class_label) &
-                        (prediction != class_label))
+            tp = np.sum((gt == class_label) & (pred == class_label))
+            fn = np.sum((gt == class_label) & (pred != class_label))
 
             recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
             recalls.append(recall)

@@ -97,7 +97,7 @@ class ArtifactRegistry():
             type=data["type"],
         )
 
-    def delete(self, artifact_id: str):
+    def delete(self, artifact_id: str) -> None:
         """Deletes an artifact based on its ID.
 
         Args:
@@ -113,7 +113,7 @@ class AutoMLSystem:
     """Manages the AutoML system."""
     _instance = None
 
-    def __init__(self, storage: LocalStorage, database: Database):
+    def __init__(self, storage: LocalStorage, database: Database) -> None:
         """Initializes the AutoMLSystem with the given
         storage and database instances.
 
@@ -126,7 +126,7 @@ class AutoMLSystem:
         self._registry = ArtifactRegistry(database, storage)
 
     @staticmethod
-    def get_instance():
+    def get_instance() -> None:
         """Retrieves the singleton instance of the AutoMLSystem.
 
         Returns:
@@ -144,7 +144,7 @@ class AutoMLSystem:
         return AutoMLSystem._instance
 
     @property
-    def registry(self):
+    def registry(self) -> Artifact:
         """Getter for registry.
 
         Returns:

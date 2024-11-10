@@ -18,8 +18,9 @@ class Lasso(Model):
         predict method.
 
         Args:
-            alpha (float, optional): Regularization strength, must be a positive float.
-            A larger value applies a stronger penalty on the 
+            alpha (float, optional): Regularization strength, must be a
+            positive float.
+            A larger value applies a stronger penalty on the
             coefficients, leading to greater feature selection.
             Default is 1.0.
         """

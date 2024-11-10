@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from typing import IO
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
@@ -7,7 +8,7 @@ from autoop.core.ml.dataset import Dataset
 automl = AutoMLSystem.get_instance()
 
 
-def upload_file(file) -> pd.DataFrame:
+def upload_file(file: IO[str]) -> pd.DataFrame:
     """Uploads a CSV file
 
     Args:
@@ -24,7 +25,7 @@ def upload_file(file) -> pd.DataFrame:
     return dataframe
 
 
-def convert_file(file, dataset_name) -> Dataset:
+def convert_file(file: pd.DataFrame, dataset_name: str) -> Dataset:
     """Converts the uploaded DataFrame into a Dataset object
     with the specified dataset name.
 

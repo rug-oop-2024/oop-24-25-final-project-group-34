@@ -16,7 +16,7 @@ from autoop.core.ml.model.classification.knn import KNearestNeighbor
 from autoop.core.ml.model.classification.naive_bayes import NaiveBayesModel
 
 from autoop.core.ml.model.regression.multiple_linear_regression import (
-    MultipleLinearRegression)
+    MultipleLinearRegression as MLR)
 from autoop.core.ml.model.regression.lasso import Lasso
 from autoop.core.ml.model.regression.support_vector_regression import (
     SupportVectorRegression)
@@ -132,19 +132,19 @@ def get_model(task_type: str) -> Tuple[str, object]:
                          "Multiple Linear Regression",
                          "Support Vector Regression"]
         model_mapping = {
-                        "Lasso": Lasso,
-                        "Multiple Linear Regression": MultipleLinearRegression,
-                        "Support Vector Regression": SupportVectorRegression,
-                    }
+                         "Lasso": Lasso,
+                         "Multiple Linear Regression": MLR,
+                         "Support Vector Regression": SupportVectorRegression
+                         }
     elif task_type == "Classification":
         model_options = ["Decision Tree",
                          "K-Nearest Neighbor",
                          "Naive Bayes"]
         model_mapping = {
-                        "Decision Tree": DecisionTree,
-                        "K-Nearest Neighbor": KNearestNeighbor,
-                        "Naive Bayes": NaiveBayesModel,
-                    }
+                         "Decision Tree": DecisionTree,
+                         "K-Nearest Neighbor": KNearestNeighbor,
+                         "Naive Bayes": NaiveBayesModel
+                         }
     else:
         st.error("Unknown task type, Cannot proceed.")
         st.stop()
@@ -175,19 +175,19 @@ def get_metric(task_type: str) -> Dict[str, object]:
     """
     if task_type == "Regression":
         metric_options = {
-                        "Mean Squared Error": MeanSquaredError,
-                        "Mean Absolute Error": MeanAbsoluteError,
-                        "RSquared": RSquared,
-                }
+                         "Mean Squared Error": MeanSquaredError,
+                         "Mean Absolute Error": MeanAbsoluteError,
+                         "RSquared": RSquared
+                         }
         default_metrics = ["Mean Squared Error",
                            "Mean Absolute Error",
                            "RSquared"]
     else:
         metric_options = {
-                        "Log Loss": LogLoss,
-                        "Accuracy": Accuracy,
-                        "Recall": Recall,
-                }
+                         "Log Loss": LogLoss,
+                         "Accuracy": Accuracy,
+                         "Recall": Recall
+                         }
         default_metrics = ["Accuracy", "Recall"]
 
     metric_names = list(metric_options.keys())

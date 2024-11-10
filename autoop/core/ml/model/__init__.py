@@ -1,3 +1,7 @@
+"""
+Init of the model folder.
+"""
+
 from autoop.core.ml.model.model import Model
 from autoop.core.ml.model.classification.decision_tree_regression import (
     DecisionTree)
