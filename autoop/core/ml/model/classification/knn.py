@@ -25,7 +25,7 @@ class KNearestNeighbor(Model):
         self._type = "classification"
 
     @property
-    def type(self):
+    def type(self) -> str:
         """Public getter for the type variable."""
         return self._type
 
@@ -73,8 +73,8 @@ class KNearestNeighbor(Model):
         Returns:
             Any: returns the predicted class for the single observation.
         """
-        distances = np.linalg.norm(observation -
-                                   self._parameters["observations"], axis=1)
+        distances = np.linalg.norm(
+            observation - self._parameters["observations"], axis=1)
         sorted_indices = np.argsort(distances)
         k_indices = sorted_indices[:self._k]
         k_nearest_labels = [tuple(self._parameters["ground_truth"]

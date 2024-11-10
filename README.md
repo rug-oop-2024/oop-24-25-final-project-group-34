@@ -153,32 +153,32 @@ If you did not implement the feature
 
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
-| Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |   Leonie             |         | |
-| `ML/artifact`                         | NF           |   Kim                |         | |
-| `ML/feature`                          | NF           |   Kim                |         | |
-| `ML/metric`                           | NF           |   Both               |         | |
-| `ML/metric/extensions`                | FN           |   Both               |         | |
-| `ML/model`                            | NF           |   Both               |         | |
-| `ML/model/extensions`                 | FN           |   Both               |         | |
-| `ML/pipeline/evaluation`              | FN           |   Kim                |         | | 
-| `ST/page/datasets`                    | NF           |   Leonie             |         | |
-| `ST/datasets/management/create`       | FN           |   Both               |         | |
-| `ST/datasets/management/save`         | FN           |                      |         | |
-| `ST/page/modelling`                   | NF           |                      |         | |
-| `ST/modelling/datasets/list`          | FN           |                      |         | |
-| `ST/modelling/datasets/features`      | FN           |                      |         | |
-| `ST/modelling/models`                 | FN           |                      |         | |
-| `ST/modelling/pipeline/split`         | FN           |                      |         | |
-| `ST/modelling/pipeline/metrics`       | FN           |                      |         | |
-| `ST/modelling/pipeline/summary`       | FN           |                      |         | |
-| `ST/modelling/pipeline/train`         | FN           |                      |         | |
-| `ST/modelling/pipeline/save`          | FN           |                      |         | |
-| `ST/page/deployment`                  | FN           |                      |         | |
+| Up-to-date requirements.txt           | NF           |                      |         |X|
+| `ML/detect-features`                  | FN           |   Leonie             |         |X|
+| `ML/artifact`                         | NF           |   Kim                |         |X|
+| `ML/feature`                          | NF           |   Kim                |         |X|
+| `ML/metric`                           | NF           |   Both               |         |X|
+| `ML/metric/extensions`                | FN           |   Both               |         |X|
+| `ML/model`                            | NF           |   Both               |         |X|
+| `ML/model/extensions`                 | FN           |   Both               |         |X|
+| `ML/pipeline/evaluation`              | FN           |   Kim                |         |X| 
+| `ST/page/datasets`                    | NF           |   Leonie             |         |X|
+| `ST/datasets/management/create`       | FN           |   Both               |         |X|
+| `ST/datasets/management/save`         | FN           |   Kim                |         |X|
+| `ST/page/modelling`                   | NF           |   Kim                |         |X|
+| `ST/modelling/datasets/list`          | FN           |   Leonie             |         |X|
+| `ST/modelling/datasets/features`      | FN           |   Leonie             |         |X|
+| `ST/modelling/models`                 | FN           |   Leonie             |         |X|
+| `ST/modelling/pipeline/split`         | FN           |   Leonie             |         |X|
+| `ST/modelling/pipeline/metrics`       | FN           |   Both               |         |X|
+| `ST/modelling/pipeline/summary`       | FN           |   Leonie             |         |X|
+| `ST/modelling/pipeline/train`         | FN           |   Both               |         |X|
+| `ST/modelling/pipeline/save`          | FN           |   Kim                |         | |
+| `ST/page/deployment`                  | FN           |   Kim                |         |X|
 | `ST/deployment/load`                  | FN           |                      |         | |
 | `ST/deployment/predict`               | FN           |                      |         | |
 
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|---------|-----|
-|           |            |                      |         | |
+| `ST/datasets/management/delete`       | NF           |  Kim                 |         | |

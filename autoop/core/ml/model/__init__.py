@@ -1,11 +1,14 @@
-
 from autoop.core.ml.model.model import Model
-from autoop.core.ml.model.regression import (MultipleLinearRegression,
-                                             Lasso,
-                                             SupportVectorRegression)
-from autoop.core.ml.model.classification import (KNearestNeighbor,
-                                                 DecisionTree,
-                                                 NaiveBayesModel)
+from autoop.core.ml.model.classification.decision_tree_regression import (
+    DecisionTree)
+from autoop.core.ml.model.classification.knn import KNearestNeighbor
+from autoop.core.ml.model.classification.naive_bayes import NaiveBayesModel
+
+from autoop.core.ml.model.regression.multiple_linear_regression import (
+    MultipleLinearRegression)
+from autoop.core.ml.model.regression.lasso import Lasso
+from autoop.core.ml.model.regression.support_vector_regression import (
+    SupportVectorRegression)
 
 REGRESSION_MODELS = [
     "MultipleLinearRegression",

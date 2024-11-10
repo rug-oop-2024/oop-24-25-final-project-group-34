@@ -8,13 +8,18 @@ from autoop.core.ml.feature import Feature
 from autoop.functional.feature import detect_feature_types
 from autoop.core.ml.pipeline import Pipeline
 from autoop.core.ml.artifact import Artifact
+from autoop.core.ml.dataset import Dataset
 
-from autoop.core.ml.model.classification import (DecisionTree,
-                                                 KNearestNeighbor,
-                                                 NaiveBayesModel)
-from autoop.core.ml.model.regression import (Lasso,
-                                             MultipleLinearRegression,
-                                             SupportVectorRegression)
+from autoop.core.ml.model.classification.decision_tree_regression import (
+    DecisionTree)
+from autoop.core.ml.model.classification.knn import KNearestNeighbor
+from autoop.core.ml.model.classification.naive_bayes import NaiveBayesModel
+
+from autoop.core.ml.model.regression.multiple_linear_regression import (
+    MultipleLinearRegression)
+from autoop.core.ml.model.regression.lasso import Lasso
+from autoop.core.ml.model.regression.support_vector_regression import (
+    SupportVectorRegression)
 
 from autoop.core.ml.metric import (
     MeanSquaredError,
@@ -70,7 +75,8 @@ def get_dataset(datasets: List[Dataset]) -> Tuple[Dataset, pd.DataFrame]:
     return None, None
 
 
-def get_features(selected_dataset: Dataset) -> Tuple[List[dict], str, List[str]]:
+def get_features(selected_dataset: Dataset) -> Tuple[List[dict], str,
+                                                     List[str]]:
     """This function detects feature types from the provided dataset
     lets the user select input and target features.
 
@@ -79,7 +85,7 @@ def get_features(selected_dataset: Dataset) -> Tuple[List[dict], str, List[str]]
         this dataset.
 
     Returns:
-        Tuple[List[dict], str, List[str]]: 
+        Tuple[List[dict], str, List[str]]:
             - list_feature (List[dict]): A list of dictionaries,
             which each contain the name and type of the detected
             feature.
@@ -94,10 +100,11 @@ def get_features(selected_dataset: Dataset) -> Tuple[List[dict], str, List[str]]
     complete_features_names = [feature["name"] for feature in list_feature]
     target_feature = st.selectbox("Select Target Feature",
                                   options=complete_features_names)
-    
-    target_feature_type = next((feature["type"] for feature in list_feature if feature["name"] == target_feature), None)
+
+    target_feature_type = next((feature["type"] for feature in list_feature if
+                                feature["name"] == target_feature), None)
     st.write(f"Selected Target Feature Type: {target_feature_type}")
-    
+
     remaining_input_features = [
         name for name in complete_features_names if name != target_feature]
     input_features = st.multiselect("Select Input Features",
@@ -114,12 +121,12 @@ def get_model(task_type: str) -> Tuple[str, object]:
         the available models.
 
     Returns:
-        Tuple[str, object]: 
+        Tuple[str, object]:
             - selected_model (str): The name of the
             selected model.
             - model_instance (object): An instance
             of the selected model class.
-    """    
+    """
     if task_type == "Regression":
         model_options = ["Lasso",
                          "Multiple Linear Regression",
@@ -160,12 +167,12 @@ def get_metric(task_type: str) -> Dict[str, object]:
 
     Returns:
         Dict[str, object]:
-            selected_metrics (Dict): 
+            selected_metrics (Dict):
                 - Dictionary where keys are the names
                 of the selected metrics and the values
                 are the instances of the corresponding
                 metric classes.
-    """    
+    """
     if task_type == "Regression":
         metric_options = {
                         "Mean Squared Error": MeanSquaredError,
@@ -212,7 +219,7 @@ def display_pipeline_summary(selected_dataset_name: str,
         dataset into training and testing sets.
         selected_metric_names (Liost[str]): List of
         selected metric names to evaluate the model.
-    """    
+    """
     st.markdown(f'''
         **Pipeline Summary**
 
@@ -233,7 +240,7 @@ def execute_pipeline(pipeline: object) -> None:
         pipeline (object): Instance of the pipeline
         object that contains the model, dataset,
         features, and evaluation metrics.
-    """    
+    """
     results = pipeline.execute()
     st.write("## Results")
     st.write("### Test Data Results")
@@ -253,7 +260,7 @@ def execute_pipeline(pipeline: object) -> None:
 def main() -> None:
     """Orchestrates the model pipeline by selecting
     datasets, features, models, and metrics.
-    """    
+    """
     automl = AutoMLSystem.get_instance()
 
     st.write("# ⚙ Modelling")

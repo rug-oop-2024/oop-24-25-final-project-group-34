@@ -8,7 +8,7 @@ class NotFoundError(Exception):
     """
     Custom Error that will be raised when a path can not be found
     """
-    def __init__(self, path) -> None:
+    def __init__(self, path: str) -> None:
         """
         Initializes the Error
 
@@ -120,7 +120,7 @@ class LocalStorage(Storage):
 
         Args:
             key (str): The path where the data will be deleted.
-             Defaults to "/".
+            Defaults to "/".
         """
         path = self._join_path(key)
         self._assert_path_exists(path)

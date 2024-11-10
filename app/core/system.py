@@ -6,16 +6,30 @@ from typing import List
 
 
 class ArtifactRegistry():
+    """Registry for managing artifacts."""
     def __init__(self,
                  database: Database,
-                 storage: Storage):
+                 storage: Storage) -> None:
+        """Initializes the ArtifactRegistry
+        with the given database and storage.
+
+        Args:
+            database (Database): Database instance
+
+            storage (Storage): Storage instance
+        """
         self._database = database
         self._storage = storage
 
-    def register(self, artifact: Artifact):
-        # save the artifact in the storage
+    def register(self, artifact: Artifact) -> None:
+        """Saves the artifact in the storage
+        and the metadata in the database.
+
+        Args:
+            artifact (Artifact): Artifact that gets
+            registered.
+        """
         self._storage.save(artifact.data, artifact.asset_path)
-        # save the metadata in the database
         entry = {
             "name": artifact.name,
             "version": artifact.version,
@@ -27,6 +41,17 @@ class ArtifactRegistry():
         self._database.set("artifacts", artifact.id, entry)
 
     def list(self, type: str = None) -> List[Artifact]:
+        """Lists all the registered artifacts.
+
+        Args:
+            type (str, optional): The type of artifacts
+            to filter by dataset and model.
+            Defaults to None.
+
+        Returns:
+            List[Artifact]: A list of Artifact objects
+            matching the type filter.
+        """
         entries = self._database.list("artifacts")
         artifacts = []
         for id, data in entries:
@@ -45,13 +70,23 @@ class ArtifactRegistry():
         return artifacts
 
     def get(self, artifact_id: str) -> Artifact:
+        """Retrieves an artifact by its ID.
+
+        Args:
+            artifact_id (str): The ID of the
+            artifact.
+
+        Returns:
+            Artifact: The requested artifact.
+        """
         print(f"Trying to load artifact with id: {artifact_id}")
-        print(f"Database entries:", self._database.list("artifacts"))
+        print("Database entries:", self._database.list("artifacts"))
 
         data = self._database.get("artifacts", artifact_id)
         if data is None:
-            raise ValueError(f"Artifact with id {artifact_id} not found in database.")
-            
+            raise ValueError(f"""Artifact with id {artifact_id}
+                             not found in database.""")
+
         return Artifact(
             name=data["name"],
             version=data["version"],
@@ -63,21 +98,41 @@ class ArtifactRegistry():
         )
 
     def delete(self, artifact_id: str):
+        """Deletes an artifact based on its ID.
+
+        Args:
+            artifact_id (str): The ID of the
+            artifact.
+        """
         data = self._database.get("artifacts", artifact_id)
         self._storage.delete(data["asset_path"])
         self._database.delete("artifacts", artifact_id)
 
 
 class AutoMLSystem:
+    """Manages the AutoML system."""
     _instance = None
 
     def __init__(self, storage: LocalStorage, database: Database):
+        """Initializes the AutoMLSystem with the given
+        storage and database instances.
+
+        Args:
+            storage (LocalStorage): The storage instance.
+            database (Database): The datavase instance.
+        """
         self._storage = storage
         self._database = database
         self._registry = ArtifactRegistry(database, storage)
 
     @staticmethod
     def get_instance():
+        """Retrieves the singleton instance of the AutoMLSystem.
+
+        Returns:
+            AutoMLSystem: The singleton instance of the
+            AutoMLSystem.
+        """
         if AutoMLSystem._instance is None:
             AutoMLSystem._instance = AutoMLSystem(
                 LocalStorage("./assets/objects"),
@@ -90,4 +145,10 @@ class AutoMLSystem:
 
     @property
     def registry(self):
+        """Getter for registry.
+
+        Returns:
+            ArtifactRegistry: Artifact
+            registry instance.
+        """
         return self._registry
